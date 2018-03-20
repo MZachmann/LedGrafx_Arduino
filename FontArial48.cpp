@@ -1,4 +1,4 @@
-//#include "../application.h"
+#include "Arduino.h"
 #include "FontArial48.h"
 
 // Arial 48 support (actually 39 high)

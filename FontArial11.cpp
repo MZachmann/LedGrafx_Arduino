@@ -1,5 +1,5 @@
-//#include "../application.h"
 // this typeface has a list of descriptors and a list of pixel data (bytes)
+#include "Arduino.h"
 #include "FontArial11.h"
 
 // Arial 48 support (actually 39 high)

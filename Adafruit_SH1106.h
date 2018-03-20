@@ -28,7 +28,7 @@ However, SH1106 driver don't provide several functions such as scroll commands.
 
 
 
-#include "../application.h"
+#include "Arduino.h"
 #include "Adafruit_GFX.h"
 
 #define BLACK 0

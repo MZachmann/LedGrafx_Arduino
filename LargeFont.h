@@ -1,8 +1,6 @@
 #ifndef _LARGEFONT_H
 #define _LARGEFONT_H
 
-#include "../application.h"
-
 // for each character here's what we care about
 struct CharacterInfo
 {

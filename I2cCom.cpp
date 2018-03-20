@@ -2,6 +2,7 @@
 #include <Wire.h>
 
 static int didBegin = false;
+static bool diagnostics = false;
 
 // baseAddr is the i2c slave address
 I2CHelper::I2CHelper(uint8_t baseAddr)

@@ -30,7 +30,7 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
 */
-
+#include "Arduino.h"
 #include "LargeFont.h"
 #include "Adafruit_GFX.h"
 
@@ -722,7 +722,7 @@ void Adafruit_GFX::setTextColor(uint16_t c, uint16_t b) {
   textbgcolor = b;
 }
 
-void Adafruit_GFX::setTextWrap(boolean w) {
+void Adafruit_GFX::setTextWrap(bool w) {
   wrap = w;
 }
 
@@ -755,6 +755,6 @@ int16_t Adafruit_GFX::height(void) {
   return _height;
 }
 
-void Adafruit_GFX::invertDisplay(boolean i) {
+void Adafruit_GFX::invertDisplay(bool i) {
   // Do nothing, must be subclassed if supported
 }

@@ -1,7 +1,7 @@
 #ifndef I2C_COM_H
 #define I2C_COM_H
 
- #include "../application.h"
+ #include "Arduino.h"
 
 // a way to not prelude a byte
 #define PRELUDE_NONE 0xfe

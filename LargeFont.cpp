@@ -11,6 +11,7 @@
 // These methods are pretty simple:
 //  (a) construct the font and then create a 256 character lookup table
 //  (b) get a pixel from the character glyph
+#include "Arduino.h"
 #include "LargeFont.h"
 
 static bool diagnoseFont = false;

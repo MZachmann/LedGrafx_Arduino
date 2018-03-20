@@ -1,7 +1,6 @@
 #ifndef _ADAFRUIT_GFX_H
 #define _ADAFRUIT_GFX_H
 
-#include "../application.h"
 #include "Print.h"
 
 
@@ -26,7 +25,7 @@ class Adafruit_GFX : public Print {
     drawRect(int16_t x, int16_t y, int16_t w, int16_t h, uint16_t color),
     fillRect(int16_t x, int16_t y, int16_t w, int16_t h, uint16_t color),
     fillScreen(uint16_t color),
-    invertDisplay(boolean i);
+    invertDisplay(bool i);
 
   // These exist only with Adafruit_GFX (no subclass overrides)
   void
@@ -52,7 +51,7 @@ class Adafruit_GFX : public Print {
     setTextColor(uint16_t c),
     setTextColor(uint16_t c, uint16_t bg),
     setTextSize(uint8_t s),
-    setTextWrap(boolean w),
+    setTextWrap(bool w),
     setRotation(uint8_t r);
 
     void SetFont(LargeFont* newFont);
@@ -71,7 +70,7 @@ class Adafruit_GFX : public Print {
     int16_t cursor_x, cursor_y;
     uint16_t textcolor, textbgcolor;
     uint8_t  textsize,  rotation;
-    boolean  wrap; // If set, 'wrap' text at right edge of display
+    bool  wrap; // If set, 'wrap' text at right edge of display
     LargeFont* _myFont;
 };
 
