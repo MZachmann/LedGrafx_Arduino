@@ -156,5 +156,6 @@ class OledDisplay : public Adafruit_SSD1306
 {
 public:
     OledDisplay(int8_t RST) : Adafruit_SSD1306(RST) {}
+	void SendCommand(uint8_t c) {ssd1306_command(c); }
 };
 #endif

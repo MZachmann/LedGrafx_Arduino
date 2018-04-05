@@ -29,9 +29,17 @@ bool diagnostics = false;
 // static ASerial _Aserial(PROG_NAME);
 
 // the various objects we use to display and read stuff
-OledDisplay     myOled(16);
+LedGrafx::LedGrafx()
+{
+	_Oled = new OledDisplay(16);	// the reset pin. ignored
+}
 
-bool HasGrafx()
+LedGrafx::~LedGrafx()
+{
+	delete _Oled;
+}
+
+bool LedGrafx::HasGrafx()
 {
     return _HasGrafx;
 }
@@ -39,34 +47,34 @@ bool HasGrafx()
 // ------------------------------------------------------------------------
 // Print a message on the Oled Display
 // ------------------------------------------------------------------------
-void PrintOledMessage(String heading, String text, String t2)
+void LedGrafx::PrintOledMessage(String heading, String text, String t2)
 {
     if(!HasGrafx())
     {
         return;
     }
 
-    myOled.clearDisplay();
+    _Oled->clearDisplay();
     LargeFont* tempFont = CreateFontArial11();
-    myOled.SetFont(tempFont);
-    myOled.setTextSize(1);
-    myOled.setTextWrap(true);
-    myOled.setTextColor(WHITE);
-    myOled.setCursor(0, YOFF_INDIC);
-    myOled.print(heading);
-    myOled.setCursor(0, YOFF_TEMP);
-    myOled.print(text);
+    _Oled->SetFont(tempFont);
+    _Oled->setTextSize(1);
+    _Oled->setTextWrap(true);
+    _Oled->setTextColor(WHITE);
+    _Oled->setCursor(0, YOFF_INDIC);
+    _Oled->print(heading);
+    _Oled->setCursor(0, YOFF_TEMP);
+    _Oled->print(text);
 	if(t2.length() > 0)
 	{
-		myOled.setCursor(0, YOFF_TEMP*2);
-		myOled.print(t2);
+		_Oled->setCursor(0, YOFF_TEMP*2);
+		_Oled->print(t2);
 	}
-    myOled.display();       // update the display
+    _Oled->display();       // update the display
 }
 
 // SetupGrafx - allow passing a false for quick non-use
 
-void SetupGrafx(bool Enable)
+void LedGrafx::SetupGrafx(bool Enable)
 {
     _HasGrafx = Enable;
     if(!Enable)
@@ -74,11 +82,23 @@ void SetupGrafx(bool Enable)
         return;
     }
 
-    myOled.begin(SSD1306_SWITCHCAPVCC, I2C_ADDR);  // initialize with the I2C addr 0x3D (for the 128x64)
-    // myOled.display();
+    _Oled->begin(SSD1306_SWITCHCAPVCC, I2C_ADDR);  // initialize with the I2C addr 0x3D (for the 128x64)
+    // _Oled->display();
     delay(200);
-    myOled.clearDisplay();
+    _Oled->clearDisplay();
     PrintOledMessage("hello", "me");
-    myOled.display();
+    _Oled->display();
 }
 
+void LedGrafx::DimGrafx(bool doDim)
+{
+	if(_HasGrafx)
+	{
+		_Oled->dim(doDim);
+	}
+}
+
+void LedGrafx::SendGrafxCmd(uint8_t cmd)
+{
+	_Oled->SendCommand(cmd);
+}

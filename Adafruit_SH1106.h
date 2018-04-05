@@ -173,5 +173,6 @@ class OledDisplay : public Adafruit_SH1106
 {
 public:
     OledDisplay(int8_t RST) : Adafruit_SH1106(RST) {}
+	void SendCommand(uint8_t c) { SH1106_command(c); }
 };
 #endif
