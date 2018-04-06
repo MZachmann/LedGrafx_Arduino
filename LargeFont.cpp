@@ -25,6 +25,15 @@ static void Serialptf(const char* view)
     }
 }
 
+// empty constructor, must call AttachInfo next
+LargeFont::LargeFont()
+{
+    CharacterDescriptors = NULL;
+    PixelData = NULL;
+    Width = 0;
+    Height = 0;
+}
+
 // Constructor
 LargeFont::LargeFont(const struct FontInfo* pFif)
 {
@@ -37,7 +46,7 @@ LargeFont::LargeFont(const struct FontInfo* pFif)
 }
 
 // not really used by the code
-LargeFont::LargeFont(int width, int height, struct CharacterInfo* chardesc, uint8_t* Pixels)
+LargeFont::LargeFont(int width, int height, const struct CharacterInfo* chardesc, const uint8_t* Pixels)
 {
     CharacterDescriptors = chardesc;
     PixelData = Pixels;
@@ -47,8 +56,18 @@ LargeFont::LargeFont(int width, int height, struct CharacterInfo* chardesc, uint
     Serialptf("Created Char Lookup B");
 }
 
+void LargeFont::AttachInfo(const struct FontInfo* pFif)
+{
+    CharacterDescriptors = pFif->CharacterDescriptors;
+    PixelData = pFif->PixelData;
+    Width = pFif->Width;
+    Height = pFif->Height;
+    CreateCharLookup();
+    Serialptf("Attached Char Lookup");
+}
+
 // for debugging print a CharacterInfo verbose
-void PrettyDescriptor(CharacterInfo* pinfo)
+void PrettyDescriptor(const struct CharacterInfo* pinfo)
 {
     if(diagnoseFont)
     {
@@ -87,7 +106,7 @@ void LargeFont::CreateCharLookup()
 }
 
 // for debugging print to serial the pixel request
-void LargeFont::PrintGetPixel(unsigned char c, bool value, int x, int y)
+void LargeFont::PrintGetPixel(unsigned char c, bool value, int x, int y) const
 {
     if(diagnoseFont)
     {
@@ -98,10 +117,10 @@ void LargeFont::PrintGetPixel(unsigned char c, bool value, int x, int y)
 }
 
 // Get a pixel for this character c at (x,y)
-bool LargeFont::GetPixel(unsigned char c, uint8_t x, uint8_t y)
+bool LargeFont::GetPixel(unsigned char c, uint8_t x, uint8_t y) const
 {
     bool rslt = false;
-    CharacterInfo* cinfo = CharacterLookup[c];
+    auto cinfo = CharacterLookup[c];
     PrettyDescriptor(cinfo);
     int dx = x - cinfo->Offset;
     int fontWidth = Width;  // width in bytes
@@ -133,9 +152,9 @@ bool LargeFont::GetPixel(unsigned char c, uint8_t x, uint8_t y)
 
 
 // Get a pixel line for this character c at (x,y) optimized
-bool LargeFont::GetPixelLine(unsigned char* pc, unsigned char c, uint8_t y)
+bool LargeFont::GetPixelLine(unsigned char* pc, unsigned char c, uint8_t y) const
 {
-    CharacterInfo* cinfo = CharacterLookup[c];
+    auto cinfo = CharacterLookup[c];
     // int dx = x - cinfo->Offset;
     // now we are within the actual pixel data
     int cwidth = cinfo->Width;
@@ -159,25 +178,25 @@ bool LargeFont::GetPixelLine(unsigned char* pc, unsigned char c, uint8_t y)
     return cwidth;
 }
 
-int LargeFont::GetWidth(unsigned char c)
+int LargeFont::GetWidth(unsigned char c) const
 {
-    CharacterInfo* cinfo = CharacterLookup[c];
+    auto cinfo = CharacterLookup[c];
     return cinfo->Width;  // how much to move for each character
 }
 
-int LargeFont::GetOffset(unsigned char c)
+int LargeFont::GetOffset(unsigned char c) const
 {
-    CharacterInfo* cinfo = CharacterLookup[c];
+    auto cinfo = CharacterLookup[c];
     return cinfo->Offset;  // how much to move for each character
 }
 
-int LargeFont::GetAdvance(unsigned char c)
+int LargeFont::GetAdvance(unsigned char c) const
 {
-    CharacterInfo* cinfo = CharacterLookup[c];
+    auto cinfo = CharacterLookup[c];
     return cinfo->Advance;  // how much to move for each character
 }
 
-int LargeFont::GetHeight()
+int LargeFont::GetHeight() const
 {
     return Height;
 }

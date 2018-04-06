@@ -3,7 +3,7 @@
 #include "FontArial11.h"
 
 // Arial 48 support (actually 39 high)
-static struct CharacterInfo Arial11Infos[] =
+static const struct CharacterInfo Arial11Infos[] =
 { { 33, 676, 1, 2, 5},
 { 36, 519, 7, 1, 9},
 { 37, 73, 12, 1, 14},
@@ -90,7 +90,7 @@ static struct CharacterInfo Arial11Infos[] =
 };
 
 // Image Size: 86bytes x 16lines
-static uint8_t Arial11Pixels[]=
+static const uint8_t Arial11Pixels[]=
 {
 0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
 0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
@@ -266,12 +266,12 @@ static uint8_t Arial11Pixels[]=
 0x00,0x00,0x00,0x00,0x03,0x0a,0x00,0x00
 };
 
-static LargeFont* bigFont = NULL;
+static LargeFont _FontArial11;
 
-// bitmap is 688x15
+// 219bytes x 41lines
 LargeFont* CreateFontArial11()
 {
-	if(bigFont == NULL)
+	if(_FontArial11.GetHeight() == 0)
 	{
 		struct FontInfo fif = {
 			Arial11Infos,		//struct CharacterInfo* CharacterDescriptors;
@@ -279,7 +279,7 @@ LargeFont* CreateFontArial11()
 			16,					//int Height;     // number of scan lines
 			86					//int Width;      // width in bytes of the data stream
 		};
-	    bigFont = new LargeFont(&fif);
+		_FontArial11.AttachInfo(&fif);
 	}
-	return bigFont;
+	return &_FontArial11;
 }

@@ -1,6 +1,8 @@
 #ifndef LED_GRAFX_H
 #define LED_GRAFX_H
 
+#define USE_SH1106
+
 class OledDisplay;
 
 class LedGrafx
@@ -9,7 +11,7 @@ class LedGrafx
 		LedGrafx();
 		virtual ~LedGrafx();
 
-		OledDisplay* Oled() { return _Oled; }
+		OledDisplay* Oled();
 		void SetupGrafx(bool Enable);
 		void PrintOledMessage(String heading, String text, String t2="");
 		bool HasGrafx();

@@ -2,7 +2,7 @@
 #include "FontArial48.h"
 
 // Arial 48 support (actually 39 high)
-static struct CharacterInfo Arial48Infos[] =
+static const struct CharacterInfo Arial48Infos[] =
 {
 	{ 33   , 1721  , 4     , 5     , 14},
 	{ 36   , 1079  , 20    , 2     , 23},
@@ -89,7 +89,7 @@ static struct CharacterInfo Arial48Infos[] =
     { 0, 0, 0, 0, 0}        // ending placeholder
 };
 
-static uint8_t Arial48Pixels[]=// Image Size: 219bytes x 41lines
+static const uint8_t Arial48Pixels[]=// Image Size: 219bytes x 41lines
 {
 0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
 0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
@@ -1216,12 +1216,12 @@ static uint8_t Arial48Pixels[]=// Image Size: 219bytes x 41lines
 0x00,0x00,0x00
 };
 
-static LargeFont* bigFont = NULL;
+static LargeFont _FontArial48;
 
 // 219bytes x 41lines
 LargeFont* CreateFontArial48()
 {
-	if(bigFont == NULL)
+	if(_FontArial48.GetHeight() == 0)
 	{
 		struct FontInfo fif = {
 			Arial48Infos,		//struct CharacterInfo* CharacterDescriptors;
@@ -1229,7 +1229,7 @@ LargeFont* CreateFontArial48()
 			41,					//int Height;     // number of scan lines
 			219					//int Width;      // width in bytes of the data stream
 		};
-	    bigFont = new LargeFont(&fif);
+		_FontArial48.AttachInfo(&fif);
 	}
-	return bigFont;
+	return &_FontArial48;
 }

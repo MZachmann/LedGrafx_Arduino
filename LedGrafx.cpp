@@ -1,15 +1,12 @@
 // ESP32 Heltec LoRa board
 #include "Arduino.h"
-#define USE_SH1106
 #include "LedGrafx.h"
-//#include "Utility.h"
 #include "Adafruit_GFX.h"
 #include "Adafruit_SSD1306.h"
 #include "Adafruit_SH1106.h"
 #include "LargeFont.h"
-#include "FontArial48.h"
 #include "FontArial11.h"
-#include "FontArial28.h"
+#include <SerialWrap.h>
 
 static bool _HasGrafx = false;
 
@@ -23,26 +20,24 @@ static bool _HasGrafx = false;
 #define YOFF_TEMP 22
 #endif
 
-bool diagnostics = false;
-// Singleton instance of the radio driver
-// static String PROG_NAME("Remote");
-// static ASerial _Aserial(PROG_NAME);
+static OledDisplay _LocalOled(16);	// allocating this via new () fails miserably ?
 
 // the various objects we use to display and read stuff
-LedGrafx::LedGrafx()
+LedGrafx::LedGrafx() : _Oled(NULL)
 {
-	_Oled = new OledDisplay(16);	// the reset pin. ignored
 }
 
 LedGrafx::~LedGrafx()
 {
-	delete _Oled;
+	// delete _Oled; now static
 }
 
 bool LedGrafx::HasGrafx()
 {
     return _HasGrafx;
 }
+
+OledDisplay* LedGrafx::Oled() { return _Oled; }
 
 // ------------------------------------------------------------------------
 // Print a message on the Oled Display
@@ -54,6 +49,7 @@ void LedGrafx::PrintOledMessage(String heading, String text, String t2)
         return;
     }
 
+	_Oled = &_LocalOled;
     _Oled->clearDisplay();
     LargeFont* tempFont = CreateFontArial11();
     _Oled->SetFont(tempFont);
@@ -82,8 +78,8 @@ void LedGrafx::SetupGrafx(bool Enable)
         return;
     }
 
+	_Oled = &_LocalOled;
     _Oled->begin(SSD1306_SWITCHCAPVCC, I2C_ADDR);  // initialize with the I2C addr 0x3D (for the 128x64)
-    // _Oled->display();
     delay(200);
     _Oled->clearDisplay();
     PrintOledMessage("hello", "me");
@@ -92,7 +88,7 @@ void LedGrafx::SetupGrafx(bool Enable)
 
 void LedGrafx::DimGrafx(bool doDim)
 {
-	if(_HasGrafx)
+	if(_HasGrafx && (_Oled != NULL))
 	{
 		_Oled->dim(doDim);
 	}
@@ -100,5 +96,8 @@ void LedGrafx::DimGrafx(bool doDim)
 
 void LedGrafx::SendGrafxCmd(uint8_t cmd)
 {
-	_Oled->SendCommand(cmd);
+	if(_HasGrafx && (_Oled != NULL))
+	{
+		_Oled->SendCommand(cmd);
+	}
 }
