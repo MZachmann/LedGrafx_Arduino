@@ -39,6 +39,17 @@ bool LedGrafx::HasGrafx()
 
 OledDisplay* LedGrafx::Oled() { return _Oled; }
 
+void LedGrafx::PrintTextAt(String data, int x, int y)
+{
+    LargeFont* tempFont = CreateFontArial11();
+    _Oled->SetFont(tempFont);
+    _Oled->setTextSize(1);
+    _Oled->setTextWrap(true);
+    _Oled->setTextColor(WHITE);
+    _Oled->setCursor(x, y);
+    _Oled->print(data);
+}
+
 // ------------------------------------------------------------------------
 // Print a message on the Oled Display
 // ------------------------------------------------------------------------
@@ -57,13 +68,13 @@ void LedGrafx::PrintOledMessage(String heading, String text, String t2)
     _Oled->setTextWrap(true);
     _Oled->setTextColor(WHITE);
     _Oled->setCursor(0, YOFF_INDIC);
-    _Oled->print(heading);
+    _Oled->print(heading.substring(0,min(12,heading.length())));
     _Oled->setCursor(0, YOFF_TEMP);
-    _Oled->print(text);
+    _Oled->print(text.substring(0,min(12,text.length())));
 	if(t2.length() > 0)
 	{
 		_Oled->setCursor(0, YOFF_TEMP*2);
-		_Oled->print(t2);
+		_Oled->print(t2.substring(0,min(10,t2.length())));
 	}
     _Oled->display();       // update the display
 }

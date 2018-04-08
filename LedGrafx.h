@@ -13,6 +13,7 @@ class LedGrafx
 
 		OledDisplay* Oled();
 		void SetupGrafx(bool Enable);
+		void PrintTextAt(String data, int x, int y);
 		void PrintOledMessage(String heading, String text, String t2="");
 		bool HasGrafx();
 		void DimGrafx(bool doDim);
