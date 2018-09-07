@@ -39,21 +39,43 @@ bool LedGrafx::HasGrafx()
 
 OledDisplay* LedGrafx::Oled() { return _Oled; }
 
-void LedGrafx::PrintTextAt(String data, int x, int y)
+void LedGrafx::PrintTextAt(const String& data, int x, int y, bool clear)
+{
+	PrintTextAt(data.c_str(), x, y, clear);
+}
+
+void LedGrafx::PrintTextAt(const char* data, int x, int y, bool clear)
 {
     LargeFont* tempFont = CreateFontArial11();
     _Oled->SetFont(tempFont);
     _Oled->setTextSize(1);
     _Oled->setTextWrap(true);
-    _Oled->setTextColor(WHITE);
+    _Oled->setTextColor(clear ? BLACK : WHITE);
     _Oled->setCursor(x, y);
     _Oled->print(data);
 }
 
+void LedGrafx::PrintMin(const String& data, int maxlength)
+{
+	auto ln = data.length();
+	if(ln > 0)
+	{
+		if(ln <= maxlength)
+		{
+			_Oled->print(data);
+		}
+		else
+		{
+			_Oled->print(data.substring(0, maxlength));
+		}
+	}
+}
+
+
 // ------------------------------------------------------------------------
 // Print a message on the Oled Display
 // ------------------------------------------------------------------------
-void LedGrafx::PrintOledMessage(String heading, String text, String t2)
+void LedGrafx::PrintOledMessage(const String& heading, const String& text, const String& t2)
 {
     if(!HasGrafx())
     {
@@ -68,14 +90,11 @@ void LedGrafx::PrintOledMessage(String heading, String text, String t2)
     _Oled->setTextWrap(true);
     _Oled->setTextColor(WHITE);
     _Oled->setCursor(0, YOFF_INDIC);
-    _Oled->print(heading.substring(0,min(12,heading.length())));
+	PrintMin(heading, 12);
     _Oled->setCursor(0, YOFF_TEMP);
-    _Oled->print(text.substring(0,min(12,text.length())));
-	if(t2.length() > 0)
-	{
-		_Oled->setCursor(0, YOFF_TEMP*2);
-		_Oled->print(t2.substring(0,min(10,t2.length())));
-	}
+	PrintMin(text, 12);
+	_Oled->setCursor(0, YOFF_TEMP*2);
+	PrintMin(t2, 12);
     _Oled->display();       // update the display
 }
 
@@ -93,7 +112,7 @@ void LedGrafx::SetupGrafx(bool Enable)
     _Oled->begin(SSD1306_SWITCHCAPVCC, I2C_ADDR);  // initialize with the I2C addr 0x3D (for the 128x64)
     delay(200);
     _Oled->clearDisplay();
-    PrintOledMessage("hello", "me");
+    PrintOledMessage("Starting", "-------");
     _Oled->display();
 }
 

@@ -13,8 +13,10 @@ class LedGrafx
 
 		OledDisplay* Oled();
 		void SetupGrafx(bool Enable);
-		void PrintTextAt(String data, int x, int y);
-		void PrintOledMessage(String heading, String text, String t2="");
+		void PrintTextAt(const char* data, int x, int y, bool clear = false);
+		void PrintTextAt(const String& data, int x, int y, bool clear = false);
+		void PrintMin(const String& data, int maxlength);
+		void PrintOledMessage(const String& heading, const String& text, const String& t2="");
 		bool HasGrafx();
 		void DimGrafx(bool doDim);
 		void SendGrafxCmd(uint8_t cmd);
