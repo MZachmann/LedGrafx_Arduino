@@ -20,6 +20,7 @@ class LedGrafx
 		bool HasGrafx();
 		void DimGrafx(bool doDim);
 		void SendGrafxCmd(uint8_t cmd);
+		void FlipGrafx(bool isFlipped);		// flip over
 	private:
 		OledDisplay* _Oled;
 };

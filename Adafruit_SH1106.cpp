@@ -269,11 +269,11 @@ void Adafruit_SH1106::begin(uint8_t vccstate, uint8_t i2caddr, bool reset) {
       { SH1106_command(0x14); }
     SH1106_command(SH1106_MEMORYMODE);                    // 0x20
     SH1106_command(0x00);                                  // 0x0 act like ks0108
-    SH1106_command(SH1106_SEGREMAP | 0x1);
+	//
+    SH1106_command(SH1106_SEGREMAP | 0x1);  				// orientation
     SH1106_command(SH1106_COMSCANDEC);
-    // msz do upside down
-    //SH1106_command(SH1106_SEGREMAP);
-    //SH1106_command(SH1106_COMSCANINC);
+
+    //
     SH1106_command(SH1106_SETCOMPINS);                    // 0xDA
     SH1106_command(0x12);
     SH1106_command(SH1106_SETCONTRAST);                   // 0x81

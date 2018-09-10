@@ -255,12 +255,10 @@ void Adafruit_SSD1306::begin(uint8_t vccstate, uint8_t i2caddr) {
       { ssd1306_command(0x14); }
     ssd1306_command(SSD1306_MEMORYMODE);                    // 0x20
     ssd1306_command(0x00);                                  // 0x0 act like ks0108
-    // msz unflipped
-    ssd1306_command(SSD1306_SEGREMAP | 0x1);
+    
+    ssd1306_command(SSD1306_SEGREMAP | 0x1);  				// orientation
     ssd1306_command(SSD1306_COMSCANDEC);
-    // msz - use for flipped display
-    //ssd1306_command(SSD1306_SEGREMAP);
-    //ssd1306_command(SSD1306_COMSCANINC);
+
     ssd1306_command(SSD1306_SETCOMPINS);                    // 0xDA
     ssd1306_command(0x12);
     ssd1306_command(SSD1306_SETCONTRAST);                   // 0x81

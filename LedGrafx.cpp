@@ -90,11 +90,11 @@ void LedGrafx::PrintOledMessage(const String& heading, const String& text, const
     _Oled->setTextWrap(true);
     _Oled->setTextColor(WHITE);
     _Oled->setCursor(0, YOFF_INDIC);
-	PrintMin(heading, 12);
+	PrintMin(heading, 14);
     _Oled->setCursor(0, YOFF_TEMP);
-	PrintMin(text, 12);
+	PrintMin(text, 14);
 	_Oled->setCursor(0, YOFF_TEMP*2);
-	PrintMin(t2, 12);
+	PrintMin(t2, 14);
     _Oled->display();       // update the display
 }
 
@@ -129,5 +129,20 @@ void LedGrafx::SendGrafxCmd(uint8_t cmd)
 	if(_HasGrafx && (_Oled != NULL))
 	{
 		_Oled->SendCommand(cmd);
+	}
+}
+
+void LedGrafx::FlipGrafx(bool isFlipped)
+{
+	if(isFlipped)
+	{
+		SendGrafxCmd(SSD1306_SEGREMAP);
+		SendGrafxCmd(SSD1306_COMSCANINC);
+	}
+	else
+	{
+		// note sh1103 and ssd1306 use same opcodes to flip display
+		SendGrafxCmd(SSD1306_SEGREMAP | 0x1);
+		SendGrafxCmd(SSD1306_COMSCANDEC);
 	}
 }
