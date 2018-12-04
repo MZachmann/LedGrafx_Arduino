@@ -348,31 +348,31 @@ void Adafruit_SH1106::turnOff()
 }
 
 void Adafruit_SH1106::SH1106_command(uint8_t c) {
-    #ifdef _USE_I2C
-        if(_i2cHelper)
-        {
-            _i2cHelper->SendBuffer(&c, 1, 0x00);
-        }
-    #else
-  if (sid != -1)
-  {
-    // SPI
-    digitalWrite(cs, HIGH);
-    digitalWrite(dc, LOW);
-    digitalWrite(cs, LOW);
-    fastSPIwrite(c);
-    digitalWrite(cs, HIGH);
-  }
-  else
-  {
-    // I2C
-    uint8_t control = 0x00;   // Co = 0, D/C = 0
-    Wire.beginTransmission(_i2caddr);
-    Wire.write(control);
-    Wire.write(c);
-    Wire.endTransmission();
-  }
-  #endif
+#ifdef USE_I2C
+	if(_i2cHelper)
+	{
+		_i2cHelper->SendBuffer(&c, 1, 0x00);
+	}
+#else
+	if (sid != -1)
+	{
+		// SPI
+		digitalWrite(cs, HIGH);
+		digitalWrite(dc, LOW);
+		digitalWrite(cs, LOW);
+		fastSPIwrite(c);
+		digitalWrite(cs, HIGH);
+	}
+	else
+	{
+		// I2C
+		uint8_t control = 0x00;   // Co = 0, D/C = 0
+		Wire.beginTransmission(_i2caddr);
+		Wire.write(control);
+		Wire.write(c);
+		Wire.endTransmission();
+	}
+#endif
 }
 
 
